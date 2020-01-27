@@ -1,35 +1,35 @@
-#define PIN_HIGH 2
-#define PIN_LOW 1
-#define PIN_INPUT 3
-#define PIN_ANALOG A2 // = PB4
+#define PIN_HIGH 3
+#define PIN_LOW 4
+#define PIN_INPUT 1
+#define PIN_ANALOG A1 // = PB2
 
 /*
  * SIMULATES A FLICKERING CANDLE (ATTINY13)
  * 
  *                 R1
- *   Lamp +---+--\/\/\/--+---+   >--------+ GND
- *            |          |    \ / 
- *            +---+   >--+    --- Q1
- *                 \ /         |
- *                 --- Q2      +--/\/\/\--+ PB1
+ *   Lamp +---+--\/\/\/--+---+ > +--------+ GND
+ *            |          |   |___|
+ *            +---+ > +--+    --- Q1
+ *                |___|        |
+ *                 --- Q2      +----------+ PB4
  *                  |
- *                  +-------------/\/\/\--+ PB2
+ *                  +---------------------+ PB3
  * 
- * The circuit works with an NPN transistor (Q1) enabling the lamp through
+ * The circuit works with an NMOS transistor (Q1) enabling the lamp through
  * a resistor (R1) and a second transistor (Q2) in parallel with the resistor
  * that varies the brightness.
  *
- *  -> PB3 is an active-high input (default - active)
- *  -> PB2 drives the transistor Q1. PB2 is on whenever PB3 is high.
- *  -> PB1 drives the transistor Q2. PB1 producing randomised signals between 2.5 and 500Hz
- *  -> A2 is an unconnected analog pin used to generate the seed on startup
+ *  -> PB1 is an active-high input (default - active)
+ *  -> PB4 drives the transistor Q1. PB4 is on whenever PB4 is high.
+ *  -> PB3 drives the transistor Q2. PB3 producing randomised signals between 2.5 and 500Hz
+ *  -> A1 is an unconnected analog pin used to generate the seed on startup
  */
 
 void setup() {
-  pinMode(PIN_INPUT, INPUT_PULLUP);
+  pinMode(PIN_INPUT, INPUT);
   pinMode(PIN_HIGH, OUTPUT);
   pinMode(PIN_LOW, OUTPUT);
-  
+  delay(10);
   randomSeed(analogRead(PIN_ANALOG));
 }
 
