@@ -1,19 +1,14 @@
-#define PIN_HIGH 3
-#define PIN_LOW 4
-#define PIN_INPUT 1
-#define PIN_ANALOG A1 // = PB2
+#define PIN_HIGH 1
+#define PIN_LOW 2
+#define PIN_INPUT 3
 
 /*
  * SIMULATES A FLICKERING CANDLE (ATTINY13)
  * 
- *                 R1
- *   Lamp +---+--\/\/\/--+---+ > +--------+ GND
- *            |          |   |___|
- *            +---+ > +--+    --- Q1
- *                |___|        |
- *                 --- Q2      +----------+ PB4
- *                  |
- *                  +---------------------+ PB3
+ *                  R1
+ *   Lamp +---+---\/\/\/---+ PB2
+ *            |
+ *            +------------+ PB1
  * 
  * The circuit works with an NMOS transistor (Q1) enabling the lamp through
  * a resistor (R1) and a second transistor (Q2) in parallel with the resistor
@@ -26,25 +21,30 @@
  */
 
 void setup() {
-  pinMode(PIN_INPUT, INPUT);
-  pinMode(PIN_HIGH, OUTPUT);
+  pinMode(PIN_INPUT, INPUT_PULLUP);
+  pinMode(PIN_HIGH, INPUT);
   pinMode(PIN_LOW, OUTPUT);
   delay(10);
-  randomSeed(analogRead(PIN_ANALOG));
 }
 
 boolean high = false;
 
 void loop() {
+  /*while(true) {
+   pinMode(PIN_HIGH, high ? OUTPUT : INPUT);
+    delay(1000);
+    high = !high;
+  }*/
   if (digitalRead(PIN_INPUT)) {
-    digitalWrite(PIN_LOW, true);
-    digitalWrite(PIN_HIGH, high);
+    digitalWrite(PIN_LOW, false);
+    //digitalWrite(PIN_HIGH, high);
+    pinMode(PIN_HIGH, high ? OUTPUT : INPUT);
     high = !high;
     // wait a random time between 1 and 200 milliseconds
     delay(1 + random(200));
   } else {
-    digitalWrite(PIN_LOW, false);
-    digitalWrite(PIN_HIGH, false);
+    digitalWrite(PIN_LOW, true);
+    pinMode(PIN_HIGH, INPUT);
     delay(20);
   }
 }
